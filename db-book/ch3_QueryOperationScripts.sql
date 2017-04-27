@@ -6,3 +6,6 @@ select * from instructor;
 
 /* section relation */
 select * from section;
+
+/* teaches relation */
+select * from teaches;
