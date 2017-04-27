@@ -9,3 +9,6 @@ select * from section;
 
 /* teaches relation */
 select * from teaches;
+
+/* courses */
+select * from course;
