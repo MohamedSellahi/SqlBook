@@ -8,7 +8,26 @@ VALUES
 ("Finance", "Painter", 120000),
 ("History","Painter",50000),
 ("Music","Packard",80000),
-("Physics","Watson",70000);
+("Physics","Watson",70000)
+;
+
+
+/* classroom relation */
+insert into classroom
+values
+("Watson",	"100", 10),
+("Watson",	"120", 20),
+("Watson",	"122", 30),
+("Taylor",	"3128", 10),
+("Taylor",	"3129", 20),
+("Taylor",	"3130", 30),
+("Painter",	"514", 10),
+("Painter",	"515", 20),
+("Painter",	"516", 30),
+("Packard","100", 10),
+("Packard","101", 20),
+("Packard","102", 30)
+;
 
 
 /* Filling the instructor relation */
@@ -18,15 +37,36 @@ values
 ("22222", "Einstein", "Physics", 95000),
 ("12121", "Wu", "Finance", 90000),
 ("32343", "El Said", "History",60000),
-("45565", "Katz", "Comp. Sci.", 75000),
-("98345", "Kim", "Elec. Eng.", 80000),
+("45565", "Katz", "Comp.Sci.", 75000),
+("98345", "Kim", "Elec.Eng.", 80000),
 ("76766", "Crick", "Biology", 72000),
-("10101", "Srinivasan", "Comp. Sci.", 65000),
+("10101", "Srinivasan", "Comp.Sci.", 65000),
 ("58583", "Califieri", "History", 62000),
-("83821", "Brandt", "Comp. Sci.", 92000),
+("83821", "Brandt", "Comp.Sci.", 92000),
 ("15151", "Mozart", "Music", 40000),
 ("33456", "Gold", "Physics", 87000),
-("76543", "Singh", "Finance", 80000);
+("76543", "Singh", "Finance", 80000)
+;
+
+
+insert into course
+values
+("BIO-101", 	"Intro. to Biology", 		"Biology", 4),
+("BIO-301", 	"Genetics", 				"Biology", 4),
+("BIO-399", 	"Computational Biology", 	"Biology", 3),
+("CS-101",		"Intro. to Comp Science", 	"Comp.Sci.", 4),
+("CS-190", 		"Game Design", 				"Comp.Sci.", 4),
+("CS-315", 		"Robotics", 				"Comp.Sci.", 3),
+("CS-319", 		"Image Processing", 		"Comp.Sci.", 3),
+("CS-347", 		"Database System Concepts", "Comp.Sci.", 3),
+("EE-181", 		"Intro. to Digital Systems","Elec.Eng.", 3),
+("FIN-201", 	"Investment Banking", 		"Finance", 3),
+("HIS-351", 	"World History", 			"History", 3),
+("MU-199", 		"Music Video Production", 	"Music", 3),
+("PHY-101", 	"Physical Principles", 		"Physics", 4)
+;
+
+
 
 /* section relation*/
 
@@ -70,22 +110,42 @@ values
 ("98345", 	"EE-181" , 	"1", 	"Spring", 	2009)
 ;
 
-insert into course
+
+/* prereq */
+insert into prereq
 values
-("BIO-101", 	"Intro. to Biology", 		"Biology", 4),
-("BIO-301", 	"Genetics", 				"Biology", 4),
-("BIO-399", 	"Computational Biology", 	"Biology", 3),
-("CS-101",		"Intro. to Comp Science", 	"Comp. Sci.", 4),
-("CS-190", 		"Game Design", 				"Comp. Sci.", 4),
-("CS-315", 		"Robotics", 				"Comp. Sci.", 3),
-("CS-319", 		"Image Processing", 		"Comp. Sci.", 3),
-("CS-347", 		"Database System Concepts", "Comp. Sci.", 3),
-("EE-181", 		"Intro. to Digital Systems","Elec. Eng.", 3),
-("FIN-201", 	"Investment Banking", 		"Finance", 3),
-("HIS-351", 	"World History", 			"History", 3),
-("MU-199", 		"Music Video Production", 	"Music", 3),
-("PHY-101", 	"Physical Principles", 		"Physics", 4)
+("BIO-301", "BIO-101"),
+("BIO-399", "BIO-101"),
+("CS-190", 	"CS-101"),
+("CS-315", 	"CS-101"),
+("CS-319", 	"CS-101"),
+("CS-347", 	"CS-101"),
+("EE-181", 	"PHY-101")
 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

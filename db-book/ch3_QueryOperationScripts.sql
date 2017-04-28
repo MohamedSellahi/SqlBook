@@ -1,6 +1,9 @@
 /* Departement ralation */
 select * from department;
 
+/* Classroom */
+select * from classroom;
+
 /* instructor relation */
 select * from instructor;
 
@@ -12,3 +15,6 @@ select * from teaches;
 
 /* courses */
 select * from course;
+
+/* prereq */
+select * from prereq;
