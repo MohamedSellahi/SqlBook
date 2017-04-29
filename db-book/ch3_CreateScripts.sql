@@ -77,6 +77,8 @@ CREATE TABLE teaches (
     PRIMARY KEY (ID , course_id , sec_id , semester , year),
     FOREIGN KEY (course_id)
         REFERENCES course(course_id)
+	-- constraint fk_teach_instructor foreign key (ID) references 
+    -- instructor(ID)
 )ENGINE=INNODB; 
 
 /* preq relation */
