@@ -345,17 +345,68 @@ having count(student.ID) >= 2
 /*
 * 3.8 Nested Subqueries 
 ***********************/
+/*
+* 3.8.1 Set membership 
+*********************/
+/* find all the courses taught in fall 2009
+and spring 2010 */
+SELECT 
+    course_id
+FROM
+    section
+WHERE
+    semester = 'Spring' AND year = 2010
+        AND course_id IN (SELECT 
+            course_id
+        FROM
+            section
+        WHERE
+            semester = 'Fall' AND year = 2009)
+;
 
+/* find all the courses taught in fall 2009
+but not spring 2010 */
+SELECT 
+    course_id
+FROM
+    section
+WHERE
+    semester = 'Fall' AND year = 2009
+        AND course_id not IN (SELECT 
+            course_id
+        FROM
+            section
+        WHERE
+            semester = 'Spring' AND year = 2010)
+;
 
+/* select instructor whose names are neither 
+Mozart nor Eistein */
+select distinct name
+from instructor 
+where name not in ('Mozart','Einstein')
+;
 
+/* find the total number of (distinct) students who 
+have taken course sections taught by instructor with 
+ID 101011 */
+select count(distinct ID)
+from takes 
+where (course_id, sec_id, semester, year) in (select
+       course_id, sec_id, semester, year
+       from teaches 
+       where teaches.ID = '10101')
+;
 
-
-
-
-
-
-
-
+/*
+* 3.8.2 Set comparaison 
+***********************/
+/* Find the names of all instructors whose salary is greater than at least one
+instructor in the Biology department */
+select distinct T.name
+from instructor as T, instructor as S
+where T.salary > S.salary and S.dept_name = 'Biology'
+;
 
 
 
