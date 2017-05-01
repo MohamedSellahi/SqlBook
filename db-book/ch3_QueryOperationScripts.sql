@@ -290,12 +290,61 @@ select count(*)
 from course
 ;
 
+/*
+* 3.7.2 Aggregation with grouping 
+*********************************/
+
+/* find the average salary in each department */
+select dept_name, avg(salary) as avg_salary
+from instructor
+group by dept_name
+;
+
+/* find the numbers of instructors in each department who teach
+a course in the spring 2010 semester */
+select dept_name, count(distinct ID)
+from instructor natural join teaches
+where semester = 'Spring' and year = 2010
+group by dept_name
+;
+/* equivalent to */
+select dept_name, Count(distinct instructor.ID) as instr_count
+from instructor, teaches
+where instructor.ID = teaches.ID
+  and teaches.semester = 'Spring' 
+  and teaches.year = 2010
+group by dept_name
+;
+
+/*
+* 3.7.3 the Having clause
+*************************/
+/* list department with average salaries more than 42000*/
+select dept_name, avg(salary) as avg_salary
+from instructor
+group by dept_name 
+having avg(salary) > 42000
+order by avg_salary asc
+;
+
+/* For each course section offered in 2009, find the average
+total credits of all students enrolled in the section, if 
+the section had at least 2 students */
+select course_id, sec_id, semester, year, avg(tot_credit)
+from takes natural join student
+where year = 2009
+group by course_id, sec_id, semester, year
+having count(student.ID) >= 2
+;
+
+/*
+* 3.7.4 Aggregation with null and boolean values 
+************************************************/
 
 
-
-
-
-
+/*
+* 3.8 Nested Subqueries 
+***********************/
 
 
 
