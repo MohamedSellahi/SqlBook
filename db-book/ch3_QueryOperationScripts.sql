@@ -408,6 +408,147 @@ from instructor as T, instructor as S
 where T.salary > S.salary and S.dept_name = 'Biology'
 ;
 
+/* using the some */
+select name, salary
+from instructor
+where salary > some(select salary
+					from instructor
+                    where dept_name = 'Biology'
+                    )
+;
+
+select name, salary
+from instructor 
+where salary <> all (select salary   -- equivalent to not in 
+					from instructor
+                    where dept_name = 'Biology'
+                    )
+;
+
+/* find the department that have the highest average salary */
+
+select dept_name
+from instructor
+group by dept_name
+having avg(salary) >= all(select avg(salary)
+from instructor
+group by dept_name
+)
+;
+
+/*
+* 3.8.3 Test for empty relation
+*******************************/
+/* find the courses taught in fall 2009 and spring 2010 */
+select course_id 
+from section as S
+where semester = 'Fall' and year = 2009 and 
+	  exists (select *
+      from section as T
+      where semester = 'Spring' and year = 2010 and S.course_id = T.course_id      
+      )
+;
+
+/* find all students who have taken all courses offered 
+in the biology department */
+select distinct S.ID, S.name
+from student as S
+where not exists((	select course_id 
+					from course 
+					where dept_name = 'History'
+					not in (select T.course_id
+							from takes as T
+							where S.ID = T.id))
+)
+;
+
+select S.ID, S.name
+from student as S
+where not exists(
+(select course_id -- all the courses offered in the biology dept
+from course 
+where dept_name = 'Biology' not in
+(select T.course_id
+from takes as T 
+where S.ID = T.ID)
+));
+
+/*
+* 3.8.4 Test for the Duplicate tuples 
+*************************************/
+/* found all courses that were offered at most once in 2009 */
+select C.course_id, C.title
+from course as C, section as S
+where S.year = 2009 and C.course_id = S.course_id 
+group by course_id
+having count(C.course_id) >= 1
+;
+
+/* equivalent */
+
+select T.course_id, T.title
+from course as T
+where 1 <= (select count(R.course_id)
+            from section as R
+            where T.course_id = R.course_id and R.year = 2009
+            )
+;
+
+/*
+* 3.8.5 Subqueries in the form clause 
+****************************************/
+/* Find the average instructors’ salaries of those departments
+where the average salary is greater than $42,000 */
+select dept_name, avg_salary
+from(select dept_name, avg(salary) as avg_salary
+	 from instructor 
+     group by dept_name
+    ) as averages
+    where avg_salary > 65000
+;
+
+/* equivalent to */
+select dept_name, avg(salary) as Sal
+from instructor
+group by dept_name
+having sal > 65000
+;
+
+/* find the maximum across all departments
+of the total salary at each department */
+
+select max(tot)
+from(select dept_name, sum(salary) as tot
+	 from instructor
+     group by dept_name
+) as dept_total
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

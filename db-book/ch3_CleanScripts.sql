@@ -30,5 +30,3 @@ drop table department;
 
 
 
--- 
-
