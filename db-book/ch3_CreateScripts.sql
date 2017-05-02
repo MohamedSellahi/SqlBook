@@ -93,7 +93,6 @@ CREATE TABLE prereq (
 ) ENGINE=INNODB;
 
 
-
 /* student */
 CREATE TABLE student (
     ID VARCHAR(15),
@@ -127,10 +126,7 @@ constraint fk_student_section_year foreign key (year) references section(year)
 );
 
 
-/* setting up constraints */
 
--- 
--- 
 
 
 
