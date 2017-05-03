@@ -495,6 +495,7 @@ where 1 <= (select count(R.course_id)
 ;
 
 /*
+<<<<<<< HEAD
 * 3.8.5 Subqueries in the form of clause 
 ****************************************/
 /* Find the average instructors’ salaries of those departments
@@ -524,51 +525,122 @@ from(select dept_name, sum(salary) as tot
 ) as dept_total
 ;
 
+/*
+* 3.9 modification of the database 
+**********************************/
+
+delete from instructor 
+where dept_name = 'Finance'
+;
+
+delete from instructor
+where salary between 13000 and 15000
+;
 
 
+/* delete all tuples in the instructor relation for those 
+instructors associated with a department located in the 
+watson building */
+delete from instructor
+where dept_name in (select dept_name
+					from department
+                    where building = 'Watson'
+                    )
+;
 
+/* delete tuples from instructor where salary is below the 
+average salary */
 
+delete from instructor
+where salary < (select avg(salary)
+				from instructor
+                )
+                ;
 
+/*
+* 3.9.2 Insertion 
+*****************/
+insert into course
+values
+('CS-437', 'Database Systems', 'Comp.Sci.', 4)
+;
 
+/*
+insert into course(title, course_id, credit, dept_name)
+values
+('Database Systems', 'CS-437', 4, 'Comp.Sci.')
+;
+*/
+/* mzke each student in the music department who has earned 
+more than 30 credit hours, an instructor in the music 
+department */
+insert into instructor
+select ID,name,dept_name,18000
+from student
+where dept_name = 'Music' and tot_credit > 30
+;
 
+/*
+delete from instructor
+where ID in (select ID from student where dept_name = 'Music')
+;
+*/
 
+/* insertion that contains null values */
+insert into student
+values('3003','Green','Finance',null)
+;
 
+/*
+* 3.9.3 Updates 
+***************/
+/* increase salaries from all instructors */
+update instructor
+set salary = salary*1.05
+;
 
+/* update with condition */
+update instructor
+set salary = salary*1.05
+where salary >= 4200
+;
 
+/* gve 5 % salary raise for instructor whose
+salary is less thant the average */
 
+/* update with case
+*/
+/* general form of case 
+update table
+set table.column =
+				case	when predicate1 then result1
+						when predicate2 then result2
+						...
+						when predicaten then resultn
+						else result0
+				end                    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
+update instructor
+set salary = case 
+			when salary <= 10000 then salary*1.05
+            else salary*1.03
+            end
+;
+/* set tot_cred of each student to the sum of the credits 
+of courses succesfully completed by the student */
+update student as S
+set tot_credit = 	(select 
+					 case 
+                     when sum(credit) is not null then sum(credit)
+                     else 0
+                     end
+					 from takes natural join course
+                     where S.ID = takes.ID and
+							takes.grade <> 'F' and
+                            takes.grade is not null
+                            )
+                            ;
+                            
 
 

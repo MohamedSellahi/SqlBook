@@ -18,6 +18,30 @@ CREATE TABLE course (
     REFERENCES department(dept_name)
 )ENGINE=INNODB;
 
+/* instructor table */
+CREATE TABLE instructor (
+    ID VARCHAR(15),
+    name VARCHAR(20) NOT NULL,
+    dept_name VARCHAR(20),
+    salary NUMERIC(10 , 2 ),
+    PRIMARY KEY (ID),
+    constraint fk_instructor_department FOREIGN KEY (dept_name)
+        REFERENCES department(dept_name)
+)ENGINE=INNODB;
+
+
+/* student */
+CREATE TABLE student (
+    ID VARCHAR(15),
+    name VARCHAR(20),
+    dept_name VARCHAR(20),
+    tot_credit NUMERIC(3 , 0 ),
+    PRIMARY KEY (ID),
+    CONSTRAINT fk_student_department FOREIGN KEY (dept_name)
+        REFERENCES department (dept_name)
+);
+
+
 /* Adviser */
 create table adviser
 (
@@ -30,16 +54,6 @@ constraint fk_adviser_instructor foreign key (instructor_id) references instruct
 );
 
 
-/* instructor table */
-CREATE TABLE instructor (
-    ID VARCHAR(5),
-    name VARCHAR(20) NOT NULL,
-    dept_name VARCHAR(20),
-    salary NUMERIC(8 , 2 ),
-    PRIMARY KEY (ID),
-    constraint fk_instructor_department FOREIGN KEY (dept_name)
-        REFERENCES department(dept_name)
-)ENGINE=INNODB;
 
 /* classroom */
 create table classroom
@@ -69,7 +83,7 @@ CREATE TABLE section (
 
 /* teaches */
 CREATE TABLE teaches (
-    ID VARCHAR(5),
+    ID VARCHAR(15),
     course_id VARCHAR(8),
     sec_id VARCHAR(8),
     semester VARCHAR(6),
@@ -93,23 +107,12 @@ CREATE TABLE prereq (
 ) ENGINE=INNODB;
 
 
-/* student */
-CREATE TABLE student (
-    ID VARCHAR(15),
-    name VARCHAR(20),
-    dept_name VARCHAR(20),
-    tot_credit NUMERIC(3 , 0 ),
-    PRIMARY KEY (ID),
-    CONSTRAINT fk_student_department FOREIGN KEY (dept_name)
-        REFERENCES department (dept_name)
-);
-
 
 /* takes table */
 create table takes
 (
 ID varchar(15),
-course_id varchar(7),
+course_id varchar(8),
 sec_id varchar(8),
 semester varchar(6),
 year numeric(4,0),
