@@ -264,18 +264,152 @@ where model = 'Mazda'
                   )
 ;
 
- 
+/************************************************************************************
+*******************************       EXO 3.5       *********************************
+*************************************************************************************/
 
+/*
+* a) Display the grade 
+*******/
+insert into marks
+values
+('11', 30),
+('22', 40),
+('33', 42),
+('44', 50),
+('55', 61),
+('66', 75),
+('70', 64),
+('80', 95),
+('13', 100)
+;
 
+/**/
+select*
+from marks
+;
 
-        
+/***************/
+insert into sgrades
+select ID*2,       (case
+				 when score < 40 then 'F'
+                 when score between 40 and 59 then 'C'
+                 when score between 60 and 79 then 'B'
+                 when score > 79 then 'A'
+                 else '-'
+                 end) as grade
 
+from marks
+;
 
+select*
+from sgrades natural join marks
+;
 
+/*
+* b) number of student for each grade 
+**********/
+select grade, count(ID)
+from sgrades
+group by grade
+;
 
+/************************************************************************************
+*******************************       EXO 3.6       *********************************
+*************************************************************************************/
+/*
+* a) 
+****/
+select *
+from department
+where lower(dept_name) like '%sci%'
+;
 
+/************************************************************************************
+*******************************       EXO 3.7       *********************************
+*************************************************************************************/
+-- select distinct p.a1 
+-- from p, r1, r2
+-- where p.a1 = r1.a1 or p.a1 = r2.a1
+-- ;
+/*
 
+for p non empty, 
+(r1 intersect r2) != empty set
 
+*/
+/************************************************************************************
+*******************************       EXO 3.8       *********************************
+*************************************************************************************/
+/*
+* a) Find all customers of the bank who have an account 
+     but not a loan 
+
+select customer_name 
+from customer 
+where customer_name not in (select customer_name from borrwoer);
+
+select customer_name
+from custumer as C
+where not exists(select custumer_name
+                 from borrower as B
+                 where C.custumer_name = B.custumer_name);
+
+b) find the names of all custumers who live in the same street 
+   and in the same city as Smith
+
+select customer_name
+from customer
+where (customer_street, customer_city) = (select customer_street, customer_city
+										  from customer 
+										  where customer_name = 'Smith')
+;
+
+c) find the names of all branches with cutomers who have an account 
+   in the bank and who live in 'Harrison'
+select branch_name
+from branch, (customer natural join depositor natural join account) as CDC
+where branch_name in (select branch_name
+                      from CDC
+                      where CDC.customer_city = 'Harrison'
+                      ;
+*/
+
+-- a) 
+
+select customer_name
+from depositor
+where customer_name not in (select customer_name from borrower)
+;
+
+-- b) 
+select customer_name 
+from customer
+where (customer_street, customer_city) = (select customer_name, customer_city
+                                          from customer
+                                          where customer_name = 'Smith'
+                                          )
+;
+
+select F.customer 
+from customer F join customer S using (customer_street, customer_city)
+where S.customer_name = 'Smith'
+;
+
+select F.customer_name
+from customer as F, customer as S
+where F.customer_city = S.customer_city 
+  and F.customer_street = S.customer_street
+;
+
+-- c) 
+select branch_name
+from branch
+where branch_name in (select branch_name
+                      from customer natural join depositor natural join account 
+                      where customer_city = 'Harrison'                      
+                      )
+;
 
 
 

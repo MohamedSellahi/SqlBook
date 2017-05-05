@@ -47,3 +47,37 @@ foreign key (driver_id) references person(driver_id)
 
 )engine = InnoDB
 ;
+
+create table Marks(
+ID varchar(5),
+score numeric(3,0),
+primary key (ID)
+)Engine = InnoDB
+;
+
+create table SGrades(
+ID varchar(5),
+grade varchar(1),
+primary key (ID)
+)engine = InnoDB
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
