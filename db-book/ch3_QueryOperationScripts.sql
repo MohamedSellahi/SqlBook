@@ -7,6 +7,11 @@ select * from classroom;
 /* instructor relation */
 select * from instructor;
 
+/* students */
+select* 
+from student
+;
+
 /* teaches relation */
 select * from teaches;
 
@@ -636,9 +641,9 @@ set tot_credit = 	(select
                      else 0
                      end
 					 from takes natural join course
-                     where S.ID = takes.ID and
-							takes.grade <> 'F' and
-                            takes.grade is not null
+                     where S.ID = takes.ID and -- 
+							takes.grade <> 'F' and  -- grades are different from F 
+                            takes.grade is not null -- grade is not null  
                             )
                             ;
                             

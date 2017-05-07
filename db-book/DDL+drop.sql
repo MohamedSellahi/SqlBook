@@ -1,4 +1,4 @@
-drop table prereq;
+/*drop table prereq;
 drop table time_slot;
 drop table advisor;
 drop table takes;
@@ -9,7 +9,7 @@ drop table instructor;
 drop table course;
 drop table department;
 drop table classroom;
-
+*/
 CREATE TABLE classroom (
     building VARCHAR(15),
     room_number VARCHAR(7),
