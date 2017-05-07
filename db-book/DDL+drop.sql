@@ -10,6 +10,8 @@ drop table course;
 drop table department;
 drop table classroom;
 */
+use `db-bookLab`;
+
 CREATE TABLE classroom (
     building VARCHAR(15),
     room_number VARCHAR(7),

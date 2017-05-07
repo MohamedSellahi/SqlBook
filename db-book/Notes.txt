@@ -9,3 +9,82 @@
     expressions) specified in the select clause.
 
 */
+
+/*
+Join operations: 
+1- join ... using :
+	a form of natural join that only requires values to match
+    on specified attributes
+    --------
+    select*
+    from t1 join t2 using(column ...)
+    ...
+    --------
+    
+2- join ... on : 
+	allows a genral predicate (condition) over the raltions being joined.
+    the result of the join contains tuples matched from the twp relations
+    and preserves duplicated culumns from the relations 
+    --------
+    select*
+    from t1 join t2 on t1.c1 = t2.c2
+    where 
+    ...
+    --------
+    it is exactly the same as 
+    --------
+    select*
+    from t1, t2 
+    where t1.c1 = t2.c2 and
+    ...
+    --------
+  Outer joins: 
+  extended version of the natural join that preserves non mathed tuples
+  from the two relations filling them with null values
+- 3) natural outer joins
+		select*
+        from t1 natural [left | right | full] outer join t2 
+		--- the full is not supported in mysql
+- 4) the 'on' clause with outer joins.
+		select*
+        from t1 [left | rigth | full] join t2 on < predicate >
+	----
+    select*
+    from t1 natural left outer join t2 
+    
+    is equivalent to 
+    select*
+    from t1 left outer join t2 on <t1.c1 = t2.c2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/

@@ -16,15 +16,17 @@ truncate table department;
 
 /* drop tables */
 drop table teaches;
+drop table adviser;
 drop table instructor;
 drop table student;
-drop table adviser;
 drop table takes;
 drop table section;
 drop table classroom;
 drop table prereq;
 drop table course;
 drop table department;
+drop table grade_points;
+drop table time_slot;
 
 
 

@@ -43,7 +43,7 @@ CREATE TABLE student (
 
 
 /* Adviser */
-create table adviser
+create table advisor
 (
 student_id VARCHAR(15),
 instructor_id VARCHAR(15),
@@ -127,6 +127,12 @@ constraint fk_student_section_semester foreign key (semester) references section
 constraint fk_student_section_year foreign key (year) references section(year)
 
 );
+
+/* grades */
+create table grade_points(
+grade varchar(2), 
+points numeric(2,1)
+)engine = InnoDB;
 
 
 
