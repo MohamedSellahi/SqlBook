@@ -84,7 +84,8 @@ CREATE TABLE student (
     ID VARCHAR(5),
     name VARCHAR(20) NOT NULL,
     dept_name VARCHAR(20),
-    tot_cred NUMERIC(3 , 0 ) CHECK (tot_cred >= 0),
+    tot_cred NUMERIC(3 , 0 ) default 0,
+    CHECK (tot_cred >= 0),
     PRIMARY KEY (ID),
     FOREIGN KEY (dept_name)
         REFERENCES department

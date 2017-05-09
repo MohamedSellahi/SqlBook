@@ -1,7 +1,6 @@
 /******************************************************
 ********************** Chapter 4 ********************** 
 ******************************************************/
-
 /*
 * 4.1) Join Expressions
 ----------------------*/
@@ -166,6 +165,229 @@ from student left outer join takes using(ID)
 select*
 from student left outer join takes on student.ID = takes.ID
 ;
+
+/*
+* 4.2 Views
+----------*/
+/*
+* 4.1 View definition
+---------------------*/
+/* view realtion faculty */
+create view faculty as 
+select ID, name, dept_name
+from instructor
+;
+
+
+/* create view that lists all the courses offered by the 
+phyics department in the fall 2009 with the building and 
+room number */
+create view physics_fall_2009 as 
+select course.course_id, sec_id, building, room_number
+from course, section
+where course.course_id = section.course_id
+and course.dept_name = 'Physics'
+and section.semester = 'Fall'
+and section.year = 2009
+;
+
+
+/*
+* 4.2.2 Using Views in SQL Queries 
+---------------------------------*/
+
+select course_id
+from physics_fall_2009
+where building = 'Watson'
+;
+
+/* specifiying the attribute names of a view explicitly */
+create view department_total_salary(dept_name, total_salary) as 
+select dept_name, sum(salary)
+from instructor
+group by dept_name
+;
+
+/*using one view in the definition of annother */
+create view physics_fall_2009_watson as 
+select course_id, room_number
+from physics_fall_2009
+where building = 'Watson'
+;
+
+/*
+this is equivalent to */
+create view physics_fall_2009_watson as 
+(select course_id, room_number
+from 
+(select course.course_id, building, room_number
+from course, section
+where course.course_id = section.course_id
+and course.dept_name = 'Physics' 
+and section.semester = 'Fall'
+and section.year = 2009
+)
+where building = 'Watson'
+)
+;
+
+create view instructor_info as 
+select ID, name, building 
+from instructor, department
+where instructor.dept_name = department.dept_name
+;
+
+/*
+* 4.2.3 Materialized Views 
+--------------------------*/
+/* 
+  Marerialized views: views stored in the database, but garanteed 
+to be updated by database system when the actual relations used in 
+the defintion of the view are changed.
+The process of keeping materialized views up to date is called 
+materialized view maintainance
+
+*/
+
+
+/*
+* 4.3 Transactions 
+******************/
+/* a transaction consists of a sequence of query and / or 
+update statments */
+
+/*
+* 4.4 Integrity constraints:
+***************************/
+
+
+/*
+* 4.5 SQL DAta Types
+-------------------*/
+
+/*
+* 4.5.1) Date and time types 
+---------------------------
+-> date '2001-04-25'
+-> time '09:30:00'
+-> timestamp '2001-04-25 10:29:01.45'
+
+*/
+
+insert into student(ID, name, dept_name)
+values 
+('12789', 'Newman','Comp.Sci.')
+;
+
+-- delete from student 
+-- where name = 'Newman'
+-- 
+-- ;
+-- 
+-- select*
+-- from student
+
+/*
+* 4.5.3 Index Creation
+--------------------*/
+
+/* create index on student name */
+-- alter table student add index studentName_index using BTREE (name);
+select dept_name
+from student 
+where ID = '12789'
+;
+
+ /*
+ * 4.5.5 User defined Types 
+ -------------------------*/
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

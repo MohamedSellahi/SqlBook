@@ -16,7 +16,7 @@ truncate table department;
 
 /* drop tables */
 drop table teaches;
-drop table adviser;
+drop table advisor;
 drop table instructor;
 drop table student;
 drop table takes;
