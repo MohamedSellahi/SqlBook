@@ -17,10 +17,13 @@ truncate table department;
 /* drop tables */
 
 drop table teaches;
+<<<<<<< HEAD
 drop table prereq;
+=======
 drop table advisor;
 drop table instructor;
 drop table student;
+>>>>>>> 78197c323edaf203060ec65d989db42c8b88066a
 drop table takes;
 drop table section;
 drop table course;

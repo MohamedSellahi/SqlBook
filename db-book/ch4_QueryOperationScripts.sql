@@ -1,7 +1,6 @@
 /******************************************************
 ********************** Chapter 4 ********************** 
 ******************************************************/
-
 /*
 * 4.1) Join Expressions
 ----------------------*/
@@ -166,6 +165,347 @@ from student left outer join takes using(ID)
 select*
 from student left outer join takes on student.ID = takes.ID
 ;
+
+/*
+* 4.2 Views
+----------*/
+/*
+* 4.1 View definition
+---------------------*/
+/* view realtion faculty */
+create view faculty as 
+select ID, name, dept_name
+from instructor
+;
+
+
+/* create view that lists all the courses offered by the 
+phyics department in the fall 2009 with the building and 
+room number */
+create view physics_fall_2009 as 
+select course.course_id, sec_id, building, room_number
+from course, section
+where course.course_id = section.course_id
+and course.dept_name = 'Physics'
+and section.semester = 'Fall'
+and section.year = 2009
+;
+
+
+/*
+* 4.2.2 Using Views in SQL Queries 
+---------------------------------*/
+
+select course_id
+from physics_fall_2009
+where building = 'Watson'
+;
+
+/* specifiying the attribute names of a view explicitly */
+create view department_total_salary(dept_name, total_salary) as 
+select dept_name, sum(salary)
+from instructor
+group by dept_name
+;
+
+/*using one view in the definition of annother */
+create view physics_fall_2009_watson as 
+select course_id, room_number
+from physics_fall_2009
+where building = 'Watson'
+;
+
+/*
+this is equivalent to */
+create view physics_fall_2009_watson as 
+(select course_id, room_number
+from 
+(select course.course_id, building, room_number
+from course, section
+where course.course_id = section.course_id
+and course.dept_name = 'Physics' 
+and section.semester = 'Fall'
+and section.year = 2009
+)
+where building = 'Watson'
+)
+;
+
+create view instructor_info as 
+select ID, name, building 
+from instructor, department
+where instructor.dept_name = department.dept_name
+;
+
+/*
+* 4.2.3 Materialized Views 
+--------------------------*/
+/* 
+  Marerialized views: views stored in the database, but garanteed 
+to be updated by database system when the actual relations used in 
+the defintion of the view are changed.
+The process of keeping materialized views up to date is called 
+materialized view maintainance
+
+*/
+
+
+/*
+* 4.3 Transactions 
+******************/
+/* a transaction consists of a sequence of query and / or 
+update statments */
+
+/*
+* 4.4 Integrity constraints:
+***************************/
+
+
+/*
+* 4.5 SQL DAta Types
+-------------------*/
+
+/*
+* 4.5.1) Date and time types 
+---------------------------
+-> date '2001-04-25'
+-> time '09:30:00'
+-> timestamp '2001-04-25 10:29:01.45'
+
+*/
+
+insert into student(ID, name, dept_name)
+values 
+('12789', 'Newman','Comp.Sci.')
+;
+
+-- delete from student 
+-- where name = 'Newman'
+-- 
+-- ;
+-- 
+-- select*
+-- from student
+
+/*
+* 4.5.3 Index Creation
+--------------------*/
+
+/* create index on student name */
+-- alter table student add index studentName_index using BTREE (name);
+select dept_name
+from student 
+where ID = '12789'
+;
+
+ /*
+ * 4.5.5 User defined Types 
+ -------------------------*/
+ /*
+ --> distinct types:
+
+create type Dollars as numeric(12,2) final;
+create type Pounds as numeric(12,2) final;
+
+not supported in the current version of mysql
+ 
+ */
+/*
+* 4.5.6 Create Table Extensions 
+-----------------------------*/
+
+create table tmp_instructor like instructor; 
+
+drop table tmp_instructor;
+drop table t1; 
+
+create temporary table t1 as 
+(select*
+from instructor
+where dept_name = 'Music')
+;
+
+select*
+from t1
+;
+
+/*
+* 4.5.7 Schemas, Catalogs and Envirments 
+--------------------------------------*/
+
+
+/*
+* 4.6 Authorization :
+*********************/
+
+/*
+* 4.6.1 Granting an Revoking of previleges 
+-----------------------------------------*/
+/*
+ grant <privileges>
+ on <relation name or view name>
+ to <users/roles>
+ ; 
+ 
+*/
+
+/* grant select on relation */
+grant select on department to user1, user2;
+
+/* update autorization */
+grant update on department to user1, user2; 		-- grand update on all attributes of depatment 
+grant update (budget) on department to user1, user2;-- grand update on budget collumn 
+
+/* revoke authorization */
+/*
+ revoke <privileges>
+ on <relation/view>
+ from <users/roles>;
+ 
+*/
+
+revoke select on department from user1, user2;
+revoke update on department from user1, user2; 
+
+/*
+* 4.6.2 Roles
+------------*/
+/*  THE NOTHION OF ROLES 
+* -> which authorization is to be given to a tyoe of users  
+* -> which user belong to that type of users 
+*/
+/*
+Exemple of roles: 
+- instructor
+- teaching_assistant
+- student  
+- dean
+- department_chair
+*/
+CREATE ROLE instructor; 
+
+/* grant privilage to role */
+grant select on takes to instructor; -- instructor is the role not the relation 
+
+/* roles can be granted to users as well as other roles 
+*/
+
+grant dean to USER1; -- USER1 has the privileges of dean 
+create role dean; -- dean is a role 
+grant instructor to dean; -- grant instructor privileges to dean 
+grant dean to USER2; -- grant dean privileges to user2 
+
+/* so USER have the privileges of dean which in turn has the privileges of 
+an instructor. 
+*/
+/*
+
+  privileges of a user/role  consist of : 
+-> all privileges directly granted to the user or the role
+-> all the privileges granted to roles that have been granted to the user/role
+
+*/
+
+/*
+ 4.6.3 Authorizations and view 
+*/
+/* create a view for the geology department, containing all 
+tuple of instructor 
+
+- The user must have select privileges on the instructor 
+  relation in order to be able to create the view
+*/
+create view geo_instructor as 
+select*
+from instructor 
+where dept_name = 'geology'
+;
+
+
+
+
+
+/*
+* 4.6.4 Authorizations on schema
+-------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
