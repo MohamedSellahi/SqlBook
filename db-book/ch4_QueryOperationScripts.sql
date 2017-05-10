@@ -168,6 +168,152 @@ from student left outer join takes on student.ID = takes.ID
 ;
 
 
+/*
+*  4.2.1) View definition 
+*************************/
+
+create view faculty as 
+select ID, name, dept_name
+from instructor
+;
+
+create view physics_fall_2009 as 
+select course.course_id, sec_id, building, room_number
+from course, section
+where course.course_id = section.course_id
+  and section.semester = 'Fall'
+  and section.year = 2009
+;
+
+/*
+* 4.2.2) Using view in Sql Queries 
+**********************************/
+select course_id
+from physics_fall_2009
+where building = 'Watson'
+;
+
+create view department_total_salary(dept_name, total_salar) as 
+select dept_name, sum(salary)
+from instructor
+group by dept_name
+;
+
+
+
+/*
+* 4.4) Integrity constraints 
+****************************/
+/*
+* 4.4.1 Constraints on a single relation
+-> not null
+-> unique
+-> check
+
+*/
+
+/*
+* 4.4.5) Referential integrity 
+*/
+/*
+exemple:
+create table course(
+...
+foreign key (dept_name) references department
+on delete cascade {[set null], [set default]}
+on update cascade
+...
+)
+
+-- 'on delete' clause means : if a delete of a tuple in department relation
+results in this referential-integrity veing violated, the system doesn't reject 
+the query, instead, "cascades" to the course relation, deleting the tuple 
+that references the department
+
+*/
+
+/*
+* 4.4.6 Integrity constraint violtion during transaction
+-------------------------------------------------------*/
+/* use of 'initially deferred' on constraint: 
+the coinstraint would be checked at the end of a transaction
+ */
+
+/*
+* 4.4.7 Complex Check Conditions and Assertions 
+----------------------------------------------*/
+
+/*
+* 4.5 SQL data Types and Schemas
+********************************/
+/* 
+* 4.5.1) Date and Time Type 
+-------------------------*/
+-- date : a calander containing four digit year, day month 
+/*
+
+date '2001-04-25'
+time '09:30:00'
+timestamp '2001-04-25 10:29:01.45'
+
+*/ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

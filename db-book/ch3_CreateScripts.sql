@@ -2,7 +2,7 @@
 CREATE TABLE department (
     dept_name VARCHAR(20) NOT NULL,
     building VARCHAR(15),
-    budget NUMERIC(12 , 2 ),
+    budget NUMERIC(12 , 2 ) not null check(budget > 0),
     CONSTRAINT pk_department PRIMARY KEY (dept_name)
 )ENGINE=INNODB;
 
@@ -12,10 +12,12 @@ CREATE TABLE course (
     course_id VARCHAR(8) NOT NULL,
     title VARCHAR(50),
     dept_name VARCHAR(20),
-    credit NUMERIC(2 , 0 ),
+    credit NUMERIC(2 , 0 ) check(credits > 0),
     PRIMARY KEY (course_id),
     CONSTRAINT fk_course_department FOREIGN KEY(dept_name)
     REFERENCES department(dept_name)
+    on  delete cascade
+    on update cascade
 )ENGINE=INNODB;
 
 /* instructor table */
@@ -23,7 +25,7 @@ CREATE TABLE instructor (
     ID VARCHAR(15),
     name VARCHAR(20) NOT NULL,
     dept_name VARCHAR(20),
-    salary NUMERIC(10 , 2 ),
+    salary NUMERIC(10 , 2 ) check(salary > 29000),
     PRIMARY KEY (ID),
     constraint fk_instructor_department FOREIGN KEY (dept_name)
         REFERENCES department(dept_name)
@@ -68,8 +70,8 @@ primary key (building, room_number)
 CREATE TABLE section (
     course_id VARCHAR(8),
     sec_id VARCHAR(8),
-    semester VARCHAR(6),
-    year NUMERIC(4 , 0 ),
+    semester VARCHAR(6) check(semester in ('Fall','Winter','Spring','Summer')),
+    year NUMERIC(4 , 0 ) check(year between 1759 and 2100),
     building VARCHAR(15),
     room_number VARCHAR(7),
     time_slot_id VARCHAR(4),
@@ -120,13 +122,10 @@ year numeric(4,0),
 grade varchar(2),
 
 primary key (ID,course_id,sec_id,semester,year),
+constraint fk_takes_section foreign key (course_id , sec_id , semester , year) references
+section(course_id,sec_id,semester,year)
 
-constraint fk_student_section_course foreign key (course_id) references section(course_id),
-constraint fk_student_section_sec_id foreign key (sec_id) references section(sec_id),
-constraint fk_student_section_semester foreign key (semester) references section(semester),
-constraint fk_student_section_year foreign key (year) references section(year)
-
-);
+)Engine = InnoDB;
 
 /* grades */
 create table grade_points(
