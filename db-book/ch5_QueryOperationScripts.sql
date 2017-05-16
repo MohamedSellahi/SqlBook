@@ -1,15 +1,12 @@
 /******************************************************
 ********************** Chapter 5 ********************** 
 *******************************************************/
-/*
-* 5.2.1 Declaring and invocking functions and Procedures
-------------------------------------------------------*/
-/* given the name of department, count the number of instructors
-in that department 
-*/
-select count(*)
-from instructor 
-where dept_name = 'Physics'
+select 
+    count(*)
+from
+    instructor
+where
+    dept_name = 'Physics'
 ;
 /**/
 
@@ -48,7 +45,61 @@ DELIMITER ;
 /* Use procedure */
 Call instructors_of('Physics');
 
-/* */
+/* use function in query */
+select 
+    dept_name, budget
+from
+    department
+where
+    dept_count(dept_name) < 2
+;
+
+/*dept-count as a procedure */
+
+drop procedure if exists dept_count_proc; 
+delimiter $$
+create procedure dept_count_proc(in dept_name varchar(20), out d_count int) 
+begin
+select count(*) into d_count
+from instructor 
+where instructor.dept_name = dept_name;
+end$$
+delimiter ;
+
+/* call the procedure*/
+
+set @d_count = 0;
+call db_book.dept_count_proc('physics', @d_count);
+select @d_count;
+
+
+
+DROP procedure IF EXISTS `instructors_of_proc`;
+
+DELIMITER $$
+CREATE PROCEDURE `instructors_of_proc` (in dept_name varchar(15), out d_count int)
+BEGIN
+select count(*) into d_count
+from instructor
+where instructor.dept_name = dept_name;
+
+select*
+from instructor 
+where instructor.dept_name = dept_name;
+END$$
+DELIMITER ;
+
+set @val = 0;
+call db_book.instructors_of_proc('physics', @val);
+select @val;
+
+
+
+
+
+
+
+
 
 
 
